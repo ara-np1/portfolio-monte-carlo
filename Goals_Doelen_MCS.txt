@@ -1,0 +1,66 @@
+Bevestigd doormiddel van onderzoek 
+
+Sequential yearly / daily modeling
+Multivariate normal random draws
+Correlation matrix integration (Cholesky)
+Annual volatility scaling
+Regime-switching logic (Bull / Bear)
+
+Financial Realism
+Automatic annual / quarterly rebalancing
+Cash flow modeling (contributions / withdrawals)
+Inflation adjustments
+Dividend yield and reinvestment
+Fee modeling (TER / Platform / Trading)
+Tax and currency risk adjustment
+
+Risk and Analysis
+Maximum Drawdown tracking
+Sharpe and Sortino ratios
+Beta and market sensitivity
+Stress testing (recession / shocks)
+Black Swan (Student-t) fat-tails
+Probability of ruin / target hitting
+
+UI and Optimization
+Streamlit / Dash interactive dashboard
+Scenario fan charts (5th-95th percentiles)
+Mean-Variance and Risk Parity optimization
+Efficient Frontier modeling
+Historical backtesting (S&P 500 / VWCE)
+GARCH volatility forecasting (ML)
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+Engine and Wiskunde
+Sequentiële tijdmodellering (jaar / dag)
+Multivariate normale trekkingen
+Correlatiematrix integratie (Cholesky)
+Correcte volatiliteit-schaling
+Regime-switching (Bull / Bear markt)
+
+Financiële Realiteit
+Periodiek herbalanceren (jaar / kwartaal)
+Cashflow (inleg / opnames)
+Inflatiecorrectie
+Dividendrendement and herbelegging
+Kostenmodellering (TER / Service / Transactie)
+Belasting and valutarisico
+
+Risico and Analyse
+Maximum Drawdown (diepste daling)
+Sharpe- and Sortino-ratio's
+Beta and marktgevoeligheid
+Stresstests (recessie / schokken)
+Black Swan (Student-t) fat-tails
+Kans op vermogensuitputting
+
+UI and Optimalisatie
+Interactief Streamlit / Dash dashboard
+Scenario-waaiers (percentielbanden)
+Mean-Variance and Risk Parity optimalisatie
+Efficient Frontier berekening
+Historische backtesting (S&P 500 / VWCE)
+GARCH volatiliteitsvoorspelling (ML)
+
+
