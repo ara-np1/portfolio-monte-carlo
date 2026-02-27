@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import yfinance as yf
 from datetime import datetime, timedelta
-# updated
+
 allocations = {
     "AAPL":    0.0274,
     "NVDA":    0.0274,
