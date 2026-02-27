@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import yfinance as yf
+import pandas as pd
 from datetime import datetime, timedelta
 
 allocations = {
@@ -67,10 +68,16 @@ def get_stock_data(tickers, lookback_years):
             print(f"  {ticker:10s}  could not load — using default values")
             results[ticker] = {"return": 0.07, "volatility": 0.15}
 
-    print("")
-    return results
+    # Build correlation matrix from real historical daily returns
+    daily_returns_df = data.pct_change().dropna()
+    corr_matrix      = daily_returns_df.corr()
 
-stock_data  = get_stock_data(allocations.keys(), lookback_years)
+    print("")
+    return results, corr_matrix
+
+
+stock_data, corr_matrix = get_stock_data(allocations.keys(), lookback_years)
+
 assets      = list(allocations.keys())
 alloc_list  = np.array([allocations[a]              for a in assets])
 return_list = np.array([stock_data[a]["return"]     for a in assets])
@@ -79,9 +86,19 @@ vol_list    = np.array([stock_data[a]["volatility"] for a in assets])
 if abs(alloc_list.sum() - 1) > 0.001:
     raise ValueError("Allocations must add up to 1.0")
 
-mu             = np.log(1 + return_list) - 0.5 * vol_list ** 2
-random_returns = np.random.normal(loc=mu, scale=vol_list, size=(num_simulations, time_horizon, len(assets)))
-random_returns = np.exp(random_returns) - 1
+# Reorder correlation matrix to match our assets list
+corr_matrix = corr_matrix.reindex(index=assets, columns=assets).fillna(0)
+np.fill_diagonal(corr_matrix.values, 1.0)
+
+# Cholesky decomposition - makes assets move together like they do in real life
+cholesky_L = np.linalg.cholesky(corr_matrix.values + np.eye(len(assets)) * 1e-6)
+
+mu = np.log(1 + return_list) - 0.5 * vol_list ** 2
+
+# Generate correlated random returns
+z              = np.random.normal(size=(num_simulations, time_horizon, len(assets)))
+z_correlated   = z @ cholesky_L.T
+random_returns = np.exp(mu + vol_list * z_correlated) - 1
 
 portfolio_returns = np.sum(random_returns * alloc_list, axis=2)
 portfolio_values  = initial_investment * np.cumprod(1 + portfolio_returns, axis=1)
