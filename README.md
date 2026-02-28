@@ -1,5 +1,5 @@
 # portfolio-monte-carlo
-Monte Carlo portfolio simulator
+Monte Carlo portfolio simulator (READ python_mc.py)
 # Portfolio Monte Carlo Simulator
 
 A Python tool simulating 5-year performance of a diversified global 
