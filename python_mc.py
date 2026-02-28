@@ -79,9 +79,47 @@ vol_list    = np.array([stock_data[a]["volatility"] for a in assets])
 if abs(alloc_list.sum() - 1) > 0.001:
     raise ValueError("Allocations must add up to 1.0")
 
-mu             = np.log(1 + return_list) - 0.5 * vol_list ** 2
-random_returns = np.random.normal(loc=mu, scale=vol_list, size=(num_simulations, time_horizon, len(assets)))
-random_returns = np.exp(random_returns) - 1
+mu = np.log(1 + return_list) - 0.5 * vol_list ** 2
+
+n = len(assets)
+corr = np.eye(n)
+
+stocks = {"AAPL", "NVDA", "MSFT", "LMT", "JPM", "JNJ", "ASML", "BRK-B", "AMZN"}
+etfs   = {"VWCE.DE", "VUAA.L", "EIMI.L", "VHYL.L", "IWDP.L", "WSML.L", "TRET.AS"}
+bonds  = {"VAGF.DE"}
+gold   = {"4GLD.DE"}
+
+for i, a1 in enumerate(assets):
+    for j, a2 in enumerate(assets):
+        if i == j:
+            continue
+
+        if a1 in stocks and a2 in stocks:
+            corr[i, j] = 0.45
+            continue
+
+        if a1 in etfs and a2 in etfs:
+            corr[i, j] = 0.40
+            continue
+
+        if a1 in bonds or a2 in bonds:
+            corr[i, j] = 0.15
+            continue
+
+        if a1 in gold or a2 in gold:
+            corr[i, j] = -0.05
+            continue
+        corr[i, j] = 0.20
+
+cov = np.outer(vol_list, vol_list) * corr
+
+L = np.linalg.cholesky(cov)
+
+rand_normals = np.random.normal(size=(num_simulations, time_horizon, n))
+correlated_normals = rand_normals @ L.T
+
+random_returns = np.exp(mu + correlated_normals) - 1
+
 
 portfolio_returns = np.sum(random_returns * alloc_list, axis=2)
 portfolio_values  = initial_investment * np.cumprod(1 + portfolio_returns, axis=1)
