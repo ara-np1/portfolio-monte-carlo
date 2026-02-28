@@ -26,7 +26,7 @@ allocations = {
 
 num_simulations    = 10000
 time_horizon       = 5
-initial_investment = 5000
+initial_investment = 650
 risk_free_rate     = 0.03
 lookback_years     = 5
 np.random.seed(0)
